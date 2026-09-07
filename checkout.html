@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RD IMPORTS | Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --bg-black: #0d0d0d;
+            --card-black: #1a1a1a;
+            --neon-yellow: #ccff00;
+            --text-light: #f5f5f5;
+            --text-gray: #a1a1a1;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #000000;
+            border-bottom: 2px solid var(--neon-yellow);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .checkout-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .checkout-section {
+            background-color: var(--card-black);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--neon-yellow);
+            border-left: 3px solid var(--neon-yellow);
+            padding-left: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #000000;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--neon-yellow);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .summary-item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .summary-item-title {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .summary-item-desc {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        .total-box {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--neon-yellow);
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .btn-confirm {
+            background-color: var(--neon-yellow);
+            color: #000000;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">RD IMPORTS</a>
+    </header>
+
+    <div class="checkout-container">
+        <div class="checkout-section">
+            <h2 class="section-title">Dados de Entrega e Pagamento</h2>
+            <form id="checkout-form" onsubmit="confirmarPedido(event)">
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" required placeholder="Digite seu nome">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço de Entrega</label>
+                    <input type="text" id="endereco" required placeholder="Rua, número, bairro e complemento">
+                </div>
+
+                <div class="form-group">
+                    <label for="pagamento">Forma de Pagamento</label>
+                    <select id="pagamento" required>
+                        <option value="">Selecione uma opção</option>
+                        <option value="pix">PIX</option>
+                        <option value="cartao">Cartão de Crédito</option>
+                        <option value="boleto">Boleto Bancário</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-confirm">Confirmar Pedido</button>
+            </form>
+        </div>
+
+        <div class="checkout-section">
+            <h2 class="section-title">Resumo do Pedido</h2>
+            <div id="summary-list"></div>
+            <div class="total-box">
+                <span>Total:</span>
+                <span id="checkout-total" style="color: var(--neon-yellow);">R$ 0,00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const carrinho = JSON.parse(localStorage.getItem('carrinhoRD')) || [];
+
+        function carregarResumo() {
+            const container = document.getElementById('summary-list');
+            
+            if (carrinho.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-gray);">Nenhum produto selecionado.</p>';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            carrinho.forEach(item => {
+                const subtotal = item.preco * item.quantidade;
+                total += subtotal;
+
+                html += `
+                    <div class="summary-item">
+                        <div class="summary-item-details">
+                            <span class="summary-item-title">${item.nome} (x${item.quantidade})</span>
+                            <span class="summary-item-desc"><strong>Descrição:</strong> Tamanho Único | Item Importado</span>
+                        </div>
+                        <span style="color: var(--neon-yellow); font-weight: bold;">
+                            R$ ${subtotal.toFixed(2).replace('.', ',')}
+                        </span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            document.getElementById('checkout-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        async function confirmarPedido(event) {
+    event.preventDefault();
+
+    const nome = document.getElementById('nome').value;
+    const endereco = document.getElementById('endereco').value;
+    const pagamento = document.getElementById('pagamento').value;
+    const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+
+    const dadosPedido = {
+        nome: nome,
+        endereco: endereco,
+        forma_pagamento: pagamento,
+        produtos: carrinho,
+        total: total
+    };
+
+    try {
+        // Envia os dados para o backend
+        const resposta = await fetch('http://localhost:3000/api/pedidos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosPedido)
+        });
+
+        if (resposta.ok) {
+            // Limpa o carrinho do navegador
+            localStorage.removeItem('carrinhoRD');
+            // Redireciona para a página de agradecimento
+            window.location.href = 'agradecimento.html';
+        } else {
+            alert('Erro ao processar o pedido. Tente novamente.');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        // Caso o backend não esteja ativo no momento, redireciona para a tela de agradecimento demonstrativa
+        localStorage.removeItem('carrinhoRD');
+        window.location.href = 'agradecimento.html';
+    }
+}
+
+        carregarResumo();
+    </script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RD IMPORTS | Início</title>
+    <!-- Ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --bg-black: #0d0d0d;
+            --card-black: #1a1a1a;
+            --neon-yellow: #ccff00;
+            --text-light: #f5f5f5;
+            --text-gray: #a1a1a1;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #000000;
+            border-bottom: 2px solid var(--neon-yellow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            color: var(--neon-yellow);
+        }
+
+        .cart-status {
+            background-color: var(--neon-yellow);
+            color: #000000;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .cart-status:hover {
+            transform: scale(1.05);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(180deg, #000000 0%, var(--bg-black) 100%);
+            border-bottom: 1px solid #222;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 span {
+            color: var(--neon-yellow);
+        }
+
+        .hero p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--neon-yellow);
+            padding-left: 0.5rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: var(--card-black);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #222;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(204, 255, 0, 0.15);
+            border-color: var(--neon-yellow);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 250px;
+            background-color: #252525;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .product-description {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--neon-yellow);
+        }
+
+        .btn-add {
+            background-color: transparent;
+            color: var(--neon-yellow);
+            border: 2px solid var(--neon-yellow);
+            padding: 0.5rem 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: var(--neon-yellow);
+            color: #000000;
+        }
+
+        /* ESTILO DO MODAL DO CARRINHO CORRIGIDO */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none; /* Mantém oculto por padrão */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-card {
+            background-color: var(--card-black);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(204, 255, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 1.2rem 1.5rem;
+            background-color: #000000;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            color: var(--neon-yellow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-close:hover {
+            color: #ffffff;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--text-gray);
+            padding: 2rem 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .cart-item-info h4 {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }
+
+        .cart-item-info span {
+            color: var(--neon-yellow);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #000;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            color: var(--neon-yellow);
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            padding: 1.2rem 1.5rem;
+            background-color: #000000;
+            border-top: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .cart-total-price {
+            color: var(--neon-yellow);
+            font-size: 1.3rem;
+        }
+
+        .btn-checkout {
+            background-color: var(--neon-yellow);
+            color: #000000;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        footer {
+            background-color: #000000;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid #222;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">RLG IMPORTS</a>
+            <ul class="nav-links">
+                <li><a href="./index2.html" class="active">Início</a></li>
+                <li><a href="./contato.html">Contato</a></li>
+            </ul>
+            <!-- CLIQUE NO BOTÃO CHAMA A FUNÇÃO abrirCarrinho() -->
+            <div class="cart-status" onclick="abrirCarrinho()">
+                <i class="fa-solid fa-cart-shopping"></i> <span id="cart-count">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>PRODUTOS <span>PRINCIPAIS</span></h1>
+        <p>O melhor do streetwear importado direto para você.</p>
+    </section>
+
+    <main class="container">
+        <h2 class="section-title">Catálogo Principal</h2>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-force-flea-black.jfif" alt="Tênis preto com escritas brancas" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Force Flea - Preto</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 350,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Force Flea - Preto', 350.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-max-95-blue.jfif" alt="Tênis azul e preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Max 95 - Azul</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 300,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Max 95 - Azul', 300.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-max-95-famous.jfif" alt="Tênis preto e verde" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Max 95 - Ben 10</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 300,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Max 95 - Ben 10', 300.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-max-95-grey.jfif" alt="Tênis cinza" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Max 95 - Cinza</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 300,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Max 95 - Cinza', 300.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-max-95-red.jfif" alt="Tênis vermelho" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Max 95 - Vermelho</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 300,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Max 95 - Vermelho', 300.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-max-tn-red.jfif" alt="Tênis vermelho e preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Max TN - Deadpool</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 250,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Max TN - Deadpool', 250.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/nike-tech-1.jfif" alt="Conjunto de roupa cinza" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Nike Tech - Branco</h3>
+                    <p class="product-description">Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 599,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Nike Tech - Branco', 599.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/nike-tech-2.jfif" alt="Conjunto de roupa vermelha" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Nike Tech - Vermelho</h3>
+                    <p class="product-description">Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 599,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Nike Tech - Vermelho', 599.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/nike-tech-3.jfif" alt="Conjunto de roupa preta" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Nike Tech - Preto</h3>
+                    <p class="product-description">Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 599,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Nike Tech - Preto', 599.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/adizero-adios-3-pro-white.avif" alt="Tênis de corrida branco" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Adidas Adizero Adios 3 Pro - Branco</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 499,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Adidas Adizero Adios 3 Pro - Branco', 499.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/air-force-flea-white.jfif" alt="Tênis branco" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Air Force Flea - Branco</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 350,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Air Force Flea - Branco', 350.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/asics-gel-nyc-black.jfif" alt="Tênis preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Asics Gel-NYC - Preto</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 399,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Asics Gel-NYC - Preto', 399.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/asics-gel-nyc-blue.jfif" alt="Tênis azul" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Asics Gel-NYC - Azul</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 399,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Asics Gel-NYC - Azul', 399.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/jordan-4-black.jfif" alt="Tênis preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Jordan 4 - Preto</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 799,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Jordan 4 - Preto', 799.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/jordan-4-blue.jfif" alt="Tênis azul" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Jordan 4 - Azul</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 899,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Jordan 4 - Azul', 899.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/new-balance-2002r0-black.jfif" alt="Tênis preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">New Balance 2002r</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 999,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('New Balance 2002r', 999.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/new-balance-530-white.jfif" alt="Tênis branco" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">New Balance 530 - Branco</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 300,00</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('New Balance 530 - Branco', 300.00)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-container">
+                    <img src="./img/sorayama-grey-and-white.jfif" alt="Tênis branco e cinza/prataAir Force Flea - Preto" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Mizuno Sorayama - Prata</h3>
+                    <p class="product-description">Conforto diário: Combine estilo e máximo conforto em cada passo. Leve, resistente e perfeito para a sua rotina.Estilo e Conforto: Peças versáteis com caimento perfeito para o seu dia a dia. Sinta-se bem em qualquer ocasião.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">R$ 1.099,90</span>
+                        <button class="btn-add" onclick="adicionarAoCarrinho('Mizuno Sorayama - Prata', 1099.90)">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CAIXA FLUTUANTE DO CARRINHO (MODAL) -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-cart-shopping"></i> Meu Carrinho</h3>
+                <button class="btn-close" onclick="fecharCarrinho()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-cart-items">
+                <div class="cart-empty">Seu carrinho está vazio.</div>
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="cart-total-price" id="cart-total-price">R$ 0,00</span>
+                </div>
+                <button class="btn-checkout" onclick="finalizarCompra()">FINALIZAR</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 RLG IMPORTS - rodrigorigolingodoyfilho@gmail.com.</p>
+    </footer>
+
+    <!-- JAVASCRIPT CORRIGIDO -->
+    <script>
+    // Carrega os itens salvos do localStorage ou inicia com uma lista vazia
+    let carrinho = JSON.parse(localStorage.getItem('carrinhoRD')) || [];
+
+    // Salva o estado atual do carrinho no localStorage
+    function salvarCarrinho() {
+        localStorage.setItem('carrinhoRD', JSON.stringify(carrinho));
+    }
+
+    function adicionarAoCarrinho(nome, preco) {
+        const itemExistente = carrinho.find(item => item.nome === nome);
+        if (itemExistente) {
+            itemExistente.quantidade++;
+        } else {
+            carrinho.push({ nome: nome, preco: preco, quantidade: 1 });
+        }
+        salvarCarrinho();
+        atualizarCarrinho();
+    }
+
+    function alterarQuantidade(index, delta) {
+        carrinho[index].quantidade += delta;
+        if (carrinho[index].quantidade <= 0) {
+            carrinho.splice(index, 1);
+        }
+        salvarCarrinho();
+        atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+        const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+        document.getElementById('cart-count').innerText = totalItens;
+
+        const containerItems = document.getElementById('modal-cart-items');
+        if (carrinho.length === 0) {
+            containerItems.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
+            document.getElementById('cart-total-price').innerText = 'R$ 0,00';
+            return;
+        }
+
+        let html = '';
+        let totalPreco = 0;
+
+        carrinho.forEach((item, index) => {
+            const subtotal = item.preco * item.quantidade;
+            totalPreco += subtotal;
+            html += `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>${item.nome}</h4>
+                        <span>R$ ${item.preco.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="cart-item-qty">
+                        <button class="qty-btn" onclick="alterarQuantidade(${index}, -1)">-</button>
+                        <span>${item.quantidade}</span>
+                        <button class="qty-btn" onclick="alterarQuantidade(${index}, 1)">+</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        containerItems.innerHTML = html;
+        document.getElementById('cart-total-price').innerText = `R$ ${totalPreco.toFixed(2).replace('.', ',')}`;
+    }
+
+    function abrirCarrinho() {
+        document.getElementById('cart-modal').style.display = 'flex';
+    }
+
+    function fecharCarrinho() {
+        document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    // Redireciona para a página de checkout
+    function finalizarCompra() {
+        if (carrinho.length === 0) {
+            alert('Seu carrinho está vazio!');
+            return;
+        }
+        salvarCarrinho();
+        window.location.href = 'checkout.html';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('cart-modal');
+        if (event.target === modal) {
+            fecharCarrinho();
+        }
+    }
+
+    // Carrega o carrinho automaticamente ao abrir/recarregar a página
+    atualizarCarrinho();
+</script>
+</body>
+</html>

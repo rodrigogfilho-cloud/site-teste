@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RD IMPORTS | Pedido Confirmado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --bg-black: #0d0d0d;
+            --card-black: #1a1a1a;
+            --neon-yellow: #ccff00;
+            --text-light: #f5f5f5;
+            --text-gray: #a1a1a1;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #000000;
+            border-bottom: 2px solid var(--neon-yellow);
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        .thankyou-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background-color: var(--card-black);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(204, 255, 0, 0.15);
+            flex: 1;
+        }
+
+        .icon-box {
+            font-size: 4rem;
+            color: var(--neon-yellow);
+            margin-bottom: 1.5rem;
+        }
+
+        .thankyou-title {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .thankyou-message {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: #000;
+            border: 1px solid var(--neon-yellow);
+            color: var(--neon-yellow);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background-color: var(--neon-yellow);
+            color: #000000;
+            padding: 0.9rem 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">RD IMPORTS</a>
+    </header>
+
+    <div class="thankyou-container">
+        <div class="icon-box">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        
+        <h1 class="thankyou-title">Obrigado pela compra!</h1>
+        
+        <p class="thankyou-message">
+            Agradecemos por escolher a <strong>RD IMPORTS</strong>.
+        </p>
+
+        <div class="status-badge">
+            <i class="fa-solid fa-gear fa-spin"></i> Seu pedido já está sendo processado
+        </div>
+
+        <div>
+            <a href="index.html" class="btn-home">Voltar para a loja</a>
+        </div>
+    </div>
+
+</body>
+</html>
